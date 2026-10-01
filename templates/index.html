@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RecruitSafe</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>RecruitSafe</h1>
+
+    <p class="subtitle">
+        Cyber Risk Assessment for Job & Internship Offers
+    </p>
+
+    <div class="card">
+
+        <form method="POST">
+
+            <textarea
+                name="job_text"
+                rows="12"
+                placeholder="Paste the job or internship message here..."
+                required
+            ></textarea>
+
+            <button type="submit">
+                Analyze Job Offer
+            </button>
+
+        </form>
+
+
+        {% if result %}
+
+        <div class="result">
+
+            <h2>Analysis Result</h2>
+
+
+            <!-- Risk Score -->
+
+            <div class="
+                risk-badge
+                {% if result.risk_level == 'HIGH RISK' %}
+                    high-risk
+                {% elif result.risk_level == 'MEDIUM RISK' %}
+                    medium-risk
+                {% else %}
+                    low-risk
+                {% endif %}
+            ">
+
+                <div class="score">
+                    {{ result.risk_score }}/100
+                </div>
+
+                <div class="risk-text">
+                    {{ result.risk_level }}
+                </div>
+
+            </div>
+
+
+            <!-- Score Breakdown -->
+
+            <h3>Risk Score Breakdown</h3>
+
+            {% if result.breakdown %}
+
+            <table class="breakdown-table">
+
+                <thead>
+                    <tr>
+                        <th>Warning Signal</th>
+                        <th>Risk Points</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for item in result.breakdown %}
+
+                    <tr>
+                        <td>{{ item.signal }}</td>
+                        <td>+{{ item.points }}</td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+            <p>No risk signals detected.</p>
+
+            {% endif %}
+
+
+            <!-- Reasons -->
+
+            <h3>Why?</h3>
+
+            {% if result.reasons %}
+
+            <ul>
+
+                {% for reason in result.reasons %}
+
+                <li>{{ reason }}</li>
+
+                {% endfor %}
+
+            </ul>
+
+            {% else %}
+
+            <p>No specific warning signs detected.</p>
+
+            {% endif %}
+
+
+            <!-- URLs -->
+
+            {% if result.urls %}
+
+            <h3>Detected URLs</h3>
+
+            <ul>
+
+                {% for url in result.urls %}
+
+                <li>
+                    <a href="{{ url }}" target="_blank">
+                        {{ url }}
+                    </a>
+                </li>
+
+                {% endfor %}
+
+            </ul>
+
+            {% endif %}
+
+
+            <!-- Verification Checklist -->
+
+            <h3>Verification Checklist</h3>
+
+            <div class="checklist">
+
+                <div class="check-item">
+                    ✓ Check the company's official website
+                </div>
+
+                <div class="check-item">
+                    ✓ Verify the recruiter's email domain
+                </div>
+
+                <div class="check-item">
+                    ✓ Never pay recruitment or interview fees
+                </div>
+
+                <div class="check-item">
+                    ✓ Never share OTPs or passwords
+                </div>
+
+                <div class="check-item">
+                    ✓ Verify the job through a trusted source
+                </div>
+
+            </div>
+
+
+            <!-- Recommendation -->
+
+            <h3>Safety Recommendation</h3>
+
+            <p>
+                {{ result.recommendation }}
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Scan History - RecruitSafe</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>RecruitSafe</h1>
+
+    <p class="subtitle">
+        Scan History
+    </p>
+
+    <div class="card">
+
+        {% if scans %}
+
+        <table class="breakdown-table">
+
+            <thead>
+                <tr>
+                    <th>Date & Time</th>
+                    <th>Risk Score</th>
+                    <th>Risk Level</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for scan in scans %}
+
+                <tr>
+                    <td>{{ scan[3] }}</td>
+
+                    <td>
+                        {{ scan[1] }}/100
+                    </td>
+
+                    <td>
+                        {{ scan[2] }}
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <p>No scan history available yet.</p>
+
+        {% endif %}
+
+        <br>
+
+        <a href="/" class="back-button">
+            ← Back to RecruitSafe
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>
